@@ -47,7 +47,16 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required',
+        ]);
+        $post = Post::update($validated);
+
+        return response()->json([
+            'message' => 'Post atualizado com sucesso!',
+            'data' => $post
+        ], 200);
     }
 
     /**
@@ -55,6 +64,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return response()->json([], 204);
     }
 }
